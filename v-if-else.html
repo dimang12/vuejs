@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>Flash Card Name</title>
+    </head>
+    <body>
+
+        <div id="app">
+            <h1 v-text="deckName"></h1>
+            <div class="user-input">
+                <input type="text" :value="userInput" onchange="onChange()" />
+            </div>
+            <div class="card" @click="flip = !flip">
+                <h2 v-if="!flip" v-text="cards[index].front"></h2>
+                <div v-else v-html="cards[index].back"></div>
+            </div>
+            <div class="navigation">
+                <button type="button" @click="move(-1)">Left</button>
+                <button type="button" @click="move(1)">Right</button>
+            </div>
+            <a :href="readMore">Read More</a>
+            
+        </div>
+
+        <script src="data.js"></script>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script>
+            const FlashCardApp = {
+                data() {
+                    return {
+                        deckName: 'Vue.js Fundamentals',
+                        cards,
+                        flip: false,
+                        readMore: 'https://v3.vuejs.org/guide',
+                        userInput: 'default',
+                        index: 0
+                    }
+                },
+
+                methods: {
+                    onChange(){
+                        console.log('change');
+                    }, 
+                    move(change) {
+                        const newIndex = this.index + change;
+                        console.log(newIndex);
+                        if(this.cards[newIndex]) {
+                            this.flip = false;
+                            this.index = newIndex;
+                        }
+                    }
+                },
+            }
+
+            const app = Vue.createApp(FlashCardApp).mount('#app');
+        </script>
+    </body>
+</html>
